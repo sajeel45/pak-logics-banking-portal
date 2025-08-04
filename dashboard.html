@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - SecureBank</title>
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-container">
+            <div class="logo">
+                <i class="fas fa-university"></i>
+                <span>SecureBank</span>
+            </div>
+            <nav class="nav">
+                <a href="#dashboard" class="nav-link active" data-page="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#accounts" class="nav-link" data-page="accounts">
+                    <i class="fas fa-credit-card"></i>
+                    <span>Accounts</span>
+                </a>
+                <a href="#transactions" class="nav-link" data-page="transactions">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transactions</span>
+                </a>
+            </nav>
+            <div class="user-menu">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name" id="userName">Loading...</span>
+                        <span class="user-email" id="userEmail">Loading...</span>
+                    </div>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboardPage">
+            <div class="page-header">
+                <h1>Welcome back, <span id="dashboardUserName">User</span>!</h1>
+                <p>Here's your financial overview</p>
+            </div>
+            
+            <div class="dashboard-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Total Balance</h3>
+                        <p class="stat-value" id="totalBalance">$0.00</p>
+                        <span class="stat-change positive">
+                            <i class="fas fa-arrow-up"></i> 0%
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>Active Accounts</h3>
+                        <p class="stat-value" id="activeAccounts">0</p>
+                        <span class="stat-description">Banking accounts</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>This Month</h3>
+                        <p class="stat-value" id="monthlyTransactions">0</p>
+                        <span class="stat-description">Transactions</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-sections">
+                <section class="quick-actions">
+                    <h2>Quick Actions</h2>
+                    <div class="action-cards">
+                        <button class="action-card" onclick="navigateToPage('accounts')">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Create Account</span>
+                        </button>
+                        <button class="action-card" onclick="navigateToPage('transactions')">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>View Transactions</span>
+                        </button>
+                        <button class="action-card" onclick="showDepositModal()">
+                            <i class="fas fa-plus-circle"></i>
+                            <span>Deposit Money</span>
+                        </button>
+                        <button class="action-card" onclick="showWithdrawModal()">
+                            <i class="fas fa-minus-circle"></i>
+                            <span>Withdraw Money</span>
+                        </button>
+                    </div>
+                </section>
+
+                <section class="recent-activity">
+                    <h2>Recent Activity</h2>
+                    <div class="activity-list" id="recentActivity">
+                        <div class="empty-state">
+                            <i class="fas fa-history"></i>
+                            <p>No recent activity</p>
+                            <span>Your transactions will appear here</span>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- Accounts Page -->
+        <div class="page" id="accountsPage">
+            <div class="page-header">
+                <h1>Your Accounts</h1>
+                <button class="primary-btn" onclick="showCreateAccountModal()">
+                    <i class="fas fa-plus"></i>
+                    Create New Account
+                </button>
+            </div>
+            
+            <div class="accounts-grid" id="accountsGrid">
+                <div class="empty-state">
+                    <i class="fas fa-credit-card"></i>
+                    <p>No accounts yet</p>
+                    <span>Create your first banking account to get started</span>
+                    <button class="primary-btn" onclick="showCreateAccountModal()">
+                        <i class="fas fa-plus"></i>
+                        Create Account
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div class="page" id="transactionsPage">
+            <div class="page-header">
+                <h1>Transaction History</h1>
+                <div class="filters">
+                    <select id="accountFilter">
+                        <option value="">All Accounts</option>
+                    </select>
+                    <select id="typeFilter">
+                        <option value="">All Types</option>
+                        <option value="deposit">Deposits</option>
+                        <option value="withdrawal">Withdrawals</option>
+                        <option value="transfer">Transfers</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="transactions-container">
+                <div class="transactions-list" id="transactionsList">
+                    <div class="empty-state">
+                        <i class="fas fa-receipt"></i>
+                        <p>No transactions yet</p>
+                        <span>Your transaction history will appear here</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Create Account Modal -->
+    <div class="modal-overlay hidden" id="createAccountModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Create New Account</h2>
+                <button class="close-btn" onclick="hideCreateAccountModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="createAccountForm">
+                <div class="form-group">
+                    <label for="accountName">Account Name</label>
+                    <input type="text" id="accountName" required placeholder="e.g., Primary Savings">
+                </div>
+                <div class="form-group">
+                    <label for="accountType">Account Type</label>
+                    <select id="accountType" required>
+                        <option value="">Select account type</option>
+                        <option value="checking">Checking Account</option>
+                        <option value="savings">Savings Account</option>
+                        <option value="business">Business Account</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="initialDeposit">Initial Deposit</label>
+                    <input type="number" id="initialDeposit" min="0" step="0.01" placeholder="0.00">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="secondary-btn" onclick="hideCreateAccountModal()">Cancel</button>
+                    <button type="submit" class="primary-btn">
+                        <i class="fas fa-plus"></i>
+                        Create Account
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div class="modal-overlay hidden" id="successModal">
+        <div class="modal success-modal">
+            <div class="success-content">
+                <i class="fas fa-check-circle"></i>
+                <h2 id="successTitle">Success!</h2>
+                <p id="successMessage">Operation completed successfully.</p>
+                <button class="primary-btn" onclick="hideSuccessModal()">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deposit Money Modal -->
+    <div class="modal-overlay hidden" id="depositModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Deposit Money</h2>
+                <button class="close-btn" onclick="hideDepositModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="depositForm">
+                <div class="form-group">
+                    <label for="depositAccount">Select Account</label>
+                    <select id="depositAccount" required>
+                        <option value="">Choose an account</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="depositAmount">Amount</label>
+                    <input type="number" id="depositAmount" min="0.01" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="depositDescription">Description (Optional)</label>
+                    <input type="text" id="depositDescription" placeholder="e.g., Salary, Gift, etc.">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="secondary-btn" onclick="hideDepositModal()">Cancel</button>
+                    <button type="submit" class="primary-btn">
+                        <i class="fas fa-plus"></i>
+                        Deposit Money
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Withdraw Money Modal -->
+    <div class="modal-overlay hidden" id="withdrawModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2>Withdraw Money</h2>
+                <button class="close-btn" onclick="hideWithdrawModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="withdrawForm">
+                <div class="form-group">
+                    <label for="withdrawAccount">Select Account</label>
+                    <select id="withdrawAccount" required>
+                        <option value="">Choose an account</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="withdrawAmount">Amount</label>
+                    <input type="number" id="withdrawAmount" min="0.01" step="0.01" required placeholder="0.00">
+                </div>
+                <div class="form-group">
+                    <label for="withdrawDescription">Description (Optional)</label>
+                    <input type="text" id="withdrawDescription" placeholder="e.g., ATM Withdrawal, Payment, etc.">
+                </div>
+                <div class="available-balance">
+                    <small>Available Balance: <span id="availableBalance">$0.00</span></small>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="secondary-btn" onclick="hideWithdrawModal()">Cancel</button>
+                    <button type="submit" class="primary-btn">
+                        <i class="fas fa-minus"></i>
+                        Withdraw Money
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="scripts/dashboard.js"></script>
+</body>
+</html>

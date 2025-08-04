@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureBank - Banking Portal</title>
+    <link rel="stylesheet" href="styles/auth.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Login Form -->
+    <div class="auth-container" id="loginContainer">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-university"></i>
+                <h1>SecureBank</h1>
+                <p>Welcome back to your secure banking portal</p>
+            </div>
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="loginEmail">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <input type="email" id="loginEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input">
+                        <input type="password" id="loginPassword" required placeholder="Enter your password">
+                        <button type="button" class="toggle-password" onclick="togglePassword('loginPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="auth-btn primary">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Sign In
+                </button>
+                <div class="auth-footer">
+                    <p>Don't have an account? <a href="#" onclick="showSignup()">Sign up here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Signup Form -->
+    <div class="auth-container hidden" id="signupContainer">
+        <div class="auth-card">
+            <div class="auth-header">
+                <i class="fas fa-university"></i>
+                <h1>SecureBank</h1>
+                <p>Create your secure banking account</p>
+            </div>
+            <form id="signupForm" class="auth-form">
+                <div class="form-group">
+                    <label for="signupName">
+                        <i class="fas fa-user"></i>
+                        Full Name
+                    </label>
+                    <input type="text" id="signupName" required placeholder="Enter your full name">
+                </div>
+                <div class="form-group">
+                    <label for="signupEmail">
+                        <i class="fas fa-envelope"></i>
+                        Email Address
+                    </label>
+                    <input type="email" id="signupEmail" required placeholder="Enter your email">
+                </div>
+                <div class="form-group">
+                    <label for="signupPassword">
+                        <i class="fas fa-lock"></i>
+                        Password
+                    </label>
+                    <div class="password-input">
+                        <input type="password" id="signupPassword" required placeholder="Create a password" minlength="6">
+                        <button type="button" class="toggle-password" onclick="togglePassword('signupPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="confirmPassword">
+                        <i class="fas fa-lock"></i>
+                        Confirm Password
+                    </label>
+                    <div class="password-input">
+                        <input type="password" id="confirmPassword" required placeholder="Confirm your password" minlength="6">
+                        <button type="button" class="toggle-password" onclick="togglePassword('confirmPassword')">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" class="auth-btn primary">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+                <div class="auth-footer">
+                    <p>Already have an account? <a href="#" onclick="showLogin()">Sign in here</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success Message -->
+    <div class="message-overlay hidden" id="messageOverlay">
+        <div class="message-card">
+            <i class="fas fa-check-circle success-icon"></i>
+            <h3 id="messageTitle">Success!</h3>
+            <p id="messageText">Your account has been created successfully.</p>
+            <button onclick="hideMessage()" class="auth-btn primary">Continue</button>
+        </div>
+    </div>
+
+    <script src="scripts/auth.js"></script>
+</body>
+</html>
